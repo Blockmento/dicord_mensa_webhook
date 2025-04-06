@@ -1,0 +1,10 @@
+# copy this file to config.yml and edit it with your settings
+create: True # generates messages, used for first run
+webhooks: # a list of webhook configurations for every message
+  - message_id: "" # the message id of the message to edit
+    url: "" # the url of the webhook
+    canteens: # a list of canteens/times for the message
+      - canteen_id: 41 # the id of the canteen
+        name: "Mensa Ernst-Abbe-Platz" # the name of the canteen
+        times: "16:00" # the time, when to switch to the next day
+        meal: "Mittagessen" # the type of meal
