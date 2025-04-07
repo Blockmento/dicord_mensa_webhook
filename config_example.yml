@@ -1,5 +1,6 @@
 # copy this file to config.yml and edit it with your settings
 create: True # generates messages, used for first run
+timezone: "Europe/Berlin" # the timezone of the times, used for the switching of meal dates
 webhooks: # a list of webhook configurations for every message
   - message_id: "" # the message id of the message to edit
     url: "" # the url of the webhook

@@ -89,19 +89,12 @@ def create_price_string(prices):
     return res
 
 
-def create_menu_embed(id: int, mensa_name: str, weekday: int = None, time_offset: float = None, time: str = "Mittagessen") -> DiscordEmbed:
-
-    if time_offset and weekday == True:
-        date = timedelta(time_offset) + datetime.now()
-        if date.weekday() in [5,6]:
-            date = ON_DAY(datetime.now(), 0)
-    elif weekday:
-        date = ON_DAY(datetime.now(), weekday)
-    elif time_offset:
-        date = timedelta(time_offset) + datetime.now()
-    else:
-        date = datetime.now()
-
+def create_menu_embed(id: int, mensa_name: str, weekday: bool = None, time_offset: float = None, time: str = "Mittagessen") -> DiscordEmbed:
+    date = datetime.now()
+    if time_offset and weekday:
+        date = timedelta(time_offset) + date
+    if weekday and date.weekday() in [5,6]:
+        date = ON_DAY(date, 0)
 
     canteen = CANTEENS[id]
     if date.date() not in canteen.feed._days.keys():

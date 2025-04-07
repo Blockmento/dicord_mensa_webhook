@@ -1,5 +1,6 @@
 services:
   app:
     build: .
+    restart: always
     volumes:
       - ./config.yml:/app/config.yml:ro

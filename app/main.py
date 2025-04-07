@@ -3,6 +3,7 @@ import sched
 import sys
 import time
 import yaml
+import pytz
 
 from discord_webhook import DiscordWebhook
 from formater import create_menu_embed
@@ -23,10 +24,13 @@ def create_webhook(config):
 def main(s, config):
     s.enter(600, 1, main, (s, config))
 
+    ect = pytz.timezone(config["timezone"])
+
     for webhook_config in config['webhooks']:
         webhook = DiscordWebhook(url=webhook_config["url"], id=webhook_config['message_id'])
         for canteen in webhook_config['canteens']:
-            if datetime.now().time() > datetime.strptime(canteen["time"], "%H:%M").time():
+            print(datetime.now(ect).time(), datetime.strptime(canteen["time"], "%H:%M").astimezone().time(), datetime.now(ect).time() > datetime.strptime(canteen["time"], "%H:%M").astimezone().time())
+            if datetime.now(ect).time() > datetime.strptime(canteen["time"], "%H:%M").astimezone().time():
                 embed = create_menu_embed(canteen['canteen_id'], canteen['name'], time_offset=.5, weekday=True, time=canteen['meal'])
             else:
                 embed = create_menu_embed(canteen['canteen_id'], canteen['name'], time_offset=0, weekday=True, time=canteen['meal'])
@@ -38,5 +42,5 @@ if __name__ == "__main__":
     if config["create"]:
         create_webhook(config)
     s = sched.scheduler(time.time, time.sleep)
-    s.enter(10, 1, main, (s, config))
+    s.enter(5, 1, main, (s, config))
     s.run()
